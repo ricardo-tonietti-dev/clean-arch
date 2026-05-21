@@ -16,6 +16,7 @@ Inclui:
 - pacotes de domínio (`domain`);
 - casos de uso (`application/usecases`);
 - portas e adaptadores (`application/gateways`, `infra/controller`, `infra/gateways`);
+- interface web server-side com Thymeleaf (`infra/controller/web`, `templates`);
 - persistência JPA (`infra/persistence`);
 - configuração de injeção de dependências (`config/UsuarioConfig.java`);
 - tecnologia e runtime do projeto.
@@ -28,6 +29,7 @@ O projeto segue uma variação de Clean Architecture / hexagonal, com camadas cl
 - `br.com.alura.codechella.application.usecases`: orquestração de casos de uso e regra de aplicação.
 - `br.com.alura.codechella.application.gateways`: portas de entrada/saída abstratas para o repositório.
 - `br.com.alura.codechella.infra.controller`: adaptadores de API REST.
+- `br.com.alura.codechella.infra.controller.web`: adaptadores web server-side com Thymeleaf.
 - `br.com.alura.codechella.infra.gateways`: adaptadores de persistência.
 - `br.com.alura.codechella.infra.persistence`: entidades JPA e repositório Spring Data.
 - `br.com.alura.codechella.config`: configuração de beans Spring para a composição das dependências.
