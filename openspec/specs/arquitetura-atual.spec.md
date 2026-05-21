@@ -106,6 +106,7 @@ flowchart TB
 flowchart TB
   subgraph codechella API
     Controller[UsuarioController<br/>REST Adapter]
+    WebController[UsuarioWebController<br/>Thymeleaf Adapter]
     UseCases[Casos de Uso<br/>Criar/Listar/Alterar/Excluir]
     Gateway[RepositorioDeUsuario<br/>Interface]
     Adapter[RepositorioDeUsuarioJpa<br/>JPA Adapter]
@@ -116,6 +117,7 @@ flowchart TB
   end
 
   Controller --> UseCases
+  WebController --> UseCases
   UseCases --> Gateway
   Gateway --> Adapter
   Adapter --> DB
@@ -219,6 +221,77 @@ sequenceDiagram
   Controller-->>Cliente: 204 No Content
 ```
 
+### Navegar pela interface web
+
+```mermaid
+sequenceDiagram
+  participant Cliente
+  participant WebController as UsuarioWebController
+  participant UseCase as ListarUsuarios
+  participant Gateway as RepositorioDeUsuario
+  participant Adapter as RepositorioDeUsuarioJpa
+  participant DB as PostgreSQL
+
+  Cliente->>WebController: GET /usuarios
+  WebController->>UseCase: obterTodosUsuarios()
+  UseCase->>Gateway: listarTodos()
+  Gateway->>Adapter: listarTodos()
+  Adapter->>DB: findAll()
+  DB-->>Adapter: lista de entidades
+  Adapter-->>Gateway: lista de domínio
+  Gateway-->>UseCase: lista de usuários
+  UseCase-->>WebController: lista de usuários
+  WebController-->>Cliente: HTML renderizado
+```
+
+### Cadastrar pela interface web
+
+```mermaid
+sequenceDiagram
+  participant Cliente
+  participant WebController as UsuarioWebController
+  participant UseCase as CriarUsuario
+  participant Gateway as RepositorioDeUsuario
+  participant Adapter as RepositorioDeUsuarioJpa
+  participant DB as PostgreSQL
+
+  Cliente->>WebController: POST /usuarios
+  WebController->>UseCase: cadastrarUsuario(usuario)
+  UseCase->>Gateway: cadastrarUsuario(usuario)
+  Gateway->>Adapter: cadastrarUsuario(usuario)
+  Adapter->>DB: save(UsuarioEntity)
+  DB-->>Adapter: entidade salva
+  Adapter-->>Gateway: Usuario domínio
+  Gateway-->>UseCase: Usuario criado
+  UseCase-->>WebController: Usuario criado
+  WebController-->>Cliente: redirect + flash message
+```
+
+### Excluir pela interface web
+
+```mermaid
+sequenceDiagram
+  participant Cliente
+  participant WebController as UsuarioWebController
+  participant UseCase as ExcluirUsuario
+  participant Gateway as RepositorioDeUsuario
+  participant Adapter as RepositorioDeUsuarioJpa
+  participant DB as PostgreSQL
+
+  Cliente->>WebController: POST /usuarios/{cpf}/excluir
+  WebController->>UseCase: excluirUsuario(cpf)
+  UseCase->>Gateway: excluirUsuario(cpf)
+  Gateway->>Adapter: findByCpf(cpf)
+  Adapter->>DB: SELECT * FROM usuarios WHERE cpf = ?
+  DB-->>Adapter: UsuarioEntity
+  Adapter->>DB: deleteById(id)
+  DB-->>Adapter: confirmado
+  Adapter-->>Gateway: concluído
+  Gateway-->>UseCase: concluído
+  UseCase-->>WebController: concluído
+  WebController-->>Cliente: redirect + flash message
+```
+
 ## Resumo do Diagrama
 
 Esta seção visualiza:
@@ -229,12 +302,54 @@ Esta seção visualiza:
 
 ## Exemplos de Chamadas REST com curl
 
-Os exemplos abaixo usam o payload de usuário do arquivo `usuarios.txt` e mostram como interagir com os endpoints REST expostos por `UsuarioController`.
+Os exemplos abaixo usam o payload de usuário do arquivo `usuarios.txt` e mostram como interagir com a interface web em `/usuarios` e com a API REST em `/api/usuarios`.
+
+### Interface Web
+
+```bash
+curl -i http://localhost:8080/usuarios
+```
+
+```bash
+curl -i http://localhost:8080/usuarios/novo
+```
+
+```bash
+curl -i -X POST http://localhost:8080/usuarios \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'nome=Maria' \
+  --data-urlencode 'cpf=789.456.132-25' \
+  --data-urlencode 'nascimento=2000-10-15' \
+  --data-urlencode 'email=maria@mail.com'
+```
+
+```bash
+curl -i http://localhost:8080/usuarios/789.456.132-25/editar
+```
+
+```bash
+curl -i -X POST http://localhost:8080/usuarios/789.456.132-25 \
+  -H 'Content-Type: application/x-www-form-urlencoded' \
+  --data-urlencode 'nome=Maria Atualizada' \
+  --data-urlencode 'cpf=789.456.132-25' \
+  --data-urlencode 'nascimento=2000-10-15' \
+  --data-urlencode 'email=maria@mail.com'
+```
+
+```bash
+curl -i http://localhost:8080/usuarios/789.456.132-25/excluir
+```
+
+```bash
+curl -i -X POST http://localhost:8080/usuarios/789.456.132-25/excluir
+```
+
+### API REST
 
 ### Criar Usuário
 
 ```bash
-curl -X POST http://localhost:8081/usuarios \
+curl -X POST http://localhost:8080/api/usuarios \
   -H "Content-Type: application/json" \
   -d '{
     "cpf": "789.456.132-25",
@@ -247,13 +362,13 @@ curl -X POST http://localhost:8081/usuarios \
 ### Listar Usuários
 
 ```bash
-curl -X GET http://localhost:8081/usuarios
+curl -X GET http://localhost:8080/api/usuarios
 ```
 
 ### Atualizar Usuário
 
 ```bash
-curl -X PUT http://localhost:8081/usuarios/789.456.132-25 \
+curl -X PUT http://localhost:8080/api/usuarios/789.456.132-25 \
   -H "Content-Type: application/json" \
   -d '{
     "cpf": "789.456.132-25",
@@ -266,7 +381,7 @@ curl -X PUT http://localhost:8081/usuarios/789.456.132-25 \
 ### Excluir Usuário
 
 ```bash
-curl -X DELETE http://localhost:8081/usuarios/789.456.132-25
+curl -X DELETE http://localhost:8080/api/usuarios/789.456.132-25
 ```
 
 ## Como usar
@@ -327,11 +442,30 @@ Responsabilidade:
 
 Componentes:
 - `UsuarioController` expõe os endpoints:
-  - `POST /usuarios` para criar usuário;
-  - `GET /usuarios` para listar todos;
-  - `PUT /usuarios/{cpf}` para atualizar usuário;
-  - `DELETE /usuarios/{cpf}` para excluir usuário.
+  - `POST /api/usuarios` para criar usuário;
+  - `GET /api/usuarios` para listar todos;
+  - `PUT /api/usuarios/{cpf}` para atualizar usuário;
+  - `DELETE /api/usuarios/{cpf}` para excluir usuário.
 - `UsuarioDto`: DTO usado como payload de entrada e saída.
+
+### Adapters - Interface Externa / Web
+
+Localização: `src/main/java/br/com/alura/codechella/infra/controller/web`
+
+Responsabilidade:
+- Expor rotas web server-side para navegação pelo CRUD de usuários.
+- Renderizar templates Thymeleaf com listagem, formulário e confirmação de exclusão.
+
+Componentes:
+- `UsuarioWebController` expõe as rotas:
+  - `GET /usuarios` para listar todos;
+  - `GET /usuarios/novo` para exibir cadastro;
+  - `POST /usuarios` para criar usuário;
+  - `GET /usuarios/{cpf}/editar` para exibir edição;
+  - `POST /usuarios/{cpf}` para atualizar usuário;
+  - `GET /usuarios/{cpf}/excluir` para confirmar exclusão;
+  - `POST /usuarios/{cpf}/excluir` para excluir usuário.
+- `UsuarioForm`: objeto de formulário com mapeamento para `Usuario`.
 
 ### Adapters - Persistência
 
@@ -376,12 +510,12 @@ Beans configurados:
 
 ## Fluxo de Dados Principal
 
-1. O cliente faz requisição REST para `UsuarioController`.
-2. O controller converte `UsuarioDto` em `Usuario` de domínio.
+1. O cliente faz requisição REST para `UsuarioController` ou navega pela interface web em `UsuarioWebController`.
+2. O controller REST converte `UsuarioDto` em `Usuario` de domínio; o controller web converte `UsuarioForm` em `Usuario`.
 3. O controller invoca o caso de uso correspondente (`CriarUsuario`, `ListarUsuarios`, `AlterarUsuario`, `ExcluirUsuario`).
 4. O caso de uso chama `RepositorioDeUsuario`.
 5. `RepositorioDeUsuarioJpa` executa a operação de persistência usando `UsuarioRepository`.
-6. O resultado é convertido de volta para `UsuarioDto` e retornado ao cliente.
+6. O resultado é convertido de volta para `UsuarioDto` no REST ou renderizado em templates Thymeleaf no fluxo web.
 
 ## Principais Entidades
 
@@ -430,6 +564,7 @@ Beans configurados:
 - Java 17
 - Spring Boot 3.2.2
 - Spring Web
+- Spring Thymeleaf
 - Spring Data JPA
 - PostgreSQL (dependência runtime)
 - Hibernate
@@ -446,10 +581,12 @@ Beans configurados:
 - `spring.jpa.show-sql=true`
 - `spring.jpa.format-sql=true`
 - `server.port=8081`
+- `server.port=8080` quando o profile `docker` estiver ativo
 
 ## Observações de Arquitetura
 
 - A arquitetura está alinhada a um estilo de camadas limpas, com domínio isolado de detalhes de infraestrutura.
+- A interface web Thymeleaf e a API REST compartilham os mesmos casos de uso, mas expõem rotas separadas.
 - A camada de domínio ainda expõe a entidade `Endereco`, mas este objeto não está persistido nem mapeado em `UsuarioEntity`.
 - A lógica de atualização do usuário depende de `cpf` para localizar o registro existente e atualiza o objeto inteiro, preservando o `id` original.
 - O uso de DTOs no controller garante separação entre API e entidade de domínio.

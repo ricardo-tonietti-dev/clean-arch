@@ -11,5 +11,5 @@
 
 ## 3. Validacao
 
-- [ ] 3.1 Validar a compilacao da aplicacao com a nova carga inicial
+- [x] 3.1 Validar a compilacao da aplicacao com a nova carga inicial
 - [x] 3.2 Atualizar a documentacao do ambiente local com o comportamento do seed
