@@ -16,6 +16,8 @@ flowchart TB
   jpa --> db
 ```
 
+Nota: no desenvolvimento local, o PostgreSQL pode rodar via Docker Compose.
+
 ### C4Context
 
 - Person(client, "Cliente", "Consumidor da API REST")
