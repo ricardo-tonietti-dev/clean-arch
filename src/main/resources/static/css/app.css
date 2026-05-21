@@ -1,0 +1,332 @@
+:root {
+    --bg: #f5efe6;
+    --surface: rgba(255, 250, 245, 0.84);
+    --surface-strong: #fffaf5;
+    --ink: #1c1917;
+    --muted: #6b625a;
+    --accent: #d97706;
+    --accent-dark: #9a3412;
+    --accent-soft: #fed7aa;
+    --success-soft: #dcfce7;
+    --danger-soft: #fee2e2;
+    --line: rgba(120, 113, 108, 0.18);
+    --shadow: 0 24px 60px rgba(41, 37, 36, 0.12);
+    --radius-xl: 28px;
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at top left, rgba(251, 191, 36, 0.24), transparent 28%),
+        radial-gradient(circle at right 15%, rgba(217, 119, 6, 0.18), transparent 26%),
+        linear-gradient(180deg, #f9f5ef 0%, var(--bg) 48%, #efe6dc 100%);
+    color: var(--ink);
+    font-family: "Work Sans", sans-serif;
+}
+
+.page-shell {
+    padding: 40px 0 72px;
+}
+
+.hero-card,
+.panel,
+.form-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    backdrop-filter: blur(14px);
+    box-shadow: var(--shadow);
+}
+
+.hero-card {
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    position: relative;
+}
+
+.hero-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -40px -40px auto;
+    width: 180px;
+    height: 180px;
+    background: radial-gradient(circle, rgba(217, 119, 6, 0.18), transparent 70%);
+    pointer-events: none;
+}
+
+.compact-hero::after {
+    width: 140px;
+    height: 140px;
+}
+
+.brand-kicker {
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-dark);
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.display-title {
+    font-family: "Fraunces", serif;
+    font-size: clamp(2.4rem, 5vw, 4.3rem);
+    line-height: 0.94;
+    margin-bottom: 1rem;
+}
+
+.small-title {
+    font-size: clamp(2rem, 4vw, 3.3rem);
+}
+
+.lead-copy {
+    max-width: 42rem;
+    color: var(--muted);
+    font-size: 1.05rem;
+}
+
+.soft-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-radius: 999px;
+    padding: 0.5rem 0.85rem;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(120, 113, 108, 0.18);
+    color: var(--muted);
+    font-size: 0.92rem;
+    font-weight: 600;
+}
+
+.soft-pill strong {
+    color: var(--ink);
+}
+
+.cta-group .btn,
+.btn-ghost,
+.ghost-link,
+.danger-link {
+    border-radius: 999px;
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+    border: none;
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    font-weight: 600;
+}
+
+.btn-accent:hover,
+.btn-accent:focus {
+    color: #fff;
+    background: linear-gradient(135deg, #ea580c 0%, #7c2d12 100%);
+}
+
+.btn-ghost,
+.ghost-link,
+.danger-link {
+    background: rgba(255, 255, 255, 0.82);
+    border: 1px solid rgba(120, 113, 108, 0.16);
+    color: var(--ink);
+    padding: 0.6rem 1rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.danger-link,
+.danger-badge {
+    color: #991b1b;
+}
+
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.single-column {
+    grid-template-columns: 1fr;
+}
+
+.stat-card,
+.table-wrap,
+.delete-summary {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(120, 113, 108, 0.12);
+}
+
+.stat-card {
+    padding: 1rem 1.1rem;
+    border-radius: 20px;
+}
+
+.stat-card strong {
+    display: block;
+    font-size: 1.6rem;
+    margin-bottom: 0.2rem;
+}
+
+.muted-copy,
+.section-copy,
+.table-note,
+.field-help,
+.summary-label {
+    color: var(--muted);
+}
+
+.panel,
+.form-panel {
+    border-radius: var(--radius-xl);
+    padding: 1.4rem;
+}
+
+.wide-panel {
+    max-width: 920px;
+    margin: 0 auto;
+}
+
+.panel-header,
+.form-header,
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.panel-header,
+.form-header {
+    margin-bottom: 1rem;
+}
+
+.panel h2,
+.form-panel h2 {
+    font-family: "Fraunces", serif;
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
+.badge-soft {
+    background: var(--accent-soft);
+    color: var(--accent-dark);
+    border-radius: 999px;
+    padding: 0.55rem 0.85rem;
+    font-weight: 700;
+    font-size: 0.82rem;
+}
+
+.alert-soft-success,
+.alert-soft-danger {
+    border: none;
+    border-radius: 18px;
+    padding: 1rem 1.1rem;
+}
+
+.alert-soft-success {
+    background: var(--success-soft);
+    color: #166534;
+}
+
+.alert-soft-danger {
+    background: var(--danger-soft);
+    color: #991b1b;
+}
+
+.table-wrap {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.table thead th {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.74rem;
+    color: var(--muted);
+    border-bottom-width: 1px;
+    padding: 1rem;
+    background: rgba(248, 250, 252, 0.76);
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-color: rgba(120, 113, 108, 0.08);
+}
+
+.identity {
+    display: grid;
+    gap: 0.18rem;
+}
+
+.action-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+}
+
+.empty-state {
+    margin-top: 1rem;
+    padding: 1.3rem;
+    border-radius: 22px;
+    border: 1px dashed rgba(120, 113, 108, 0.2);
+    background: rgba(255, 255, 255, 0.52);
+}
+
+.form-panel .form-control {
+    border-radius: 16px;
+    border-color: rgba(120, 113, 108, 0.2);
+    padding: 0.9rem 0.95rem;
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.form-panel label {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.form-actions {
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.delete-summary {
+    border-radius: 24px;
+    padding: 1.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.summary-label {
+    display: block;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.3rem;
+}
+
+@media (max-width: 767.98px) {
+    .page-shell {
+        padding-top: 20px;
+    }
+
+    .stat-grid,
+    .delete-summary {
+        grid-template-columns: 1fr;
+    }
+
+    .panel-header,
+    .form-header,
+    .form-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table-wrap {
+        overflow-x: auto;
+    }
+
+    .action-group {
+        justify-content: flex-start;
+    }
+}

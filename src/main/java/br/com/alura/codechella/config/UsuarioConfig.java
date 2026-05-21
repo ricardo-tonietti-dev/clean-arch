@@ -2,6 +2,7 @@ package br.com.alura.codechella.config;
 
 import br.com.alura.codechella.application.gateways.RepositorioDeUsuario;
 import br.com.alura.codechella.application.usecases.AlterarUsuario;
+import br.com.alura.codechella.application.usecases.BuscarUsuarioPorCpf;
 import br.com.alura.codechella.application.usecases.CriarUsuario;
 import br.com.alura.codechella.application.usecases.ExcluirUsuario;
 import br.com.alura.codechella.application.usecases.ListarUsuarios;
@@ -16,6 +17,11 @@ public class UsuarioConfig {
     @Bean
     CriarUsuario criarUsuario(RepositorioDeUsuario repositorioDeUsuario){
         return new CriarUsuario(repositorioDeUsuario);
+    }
+
+    @Bean
+    BuscarUsuarioPorCpf buscarUsuarioPorCpf(RepositorioDeUsuario repositorioDeUsuario) {
+        return new BuscarUsuarioPorCpf(repositorioDeUsuario);
     }
 
     @Bean

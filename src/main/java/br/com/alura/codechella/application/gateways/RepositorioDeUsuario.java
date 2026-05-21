@@ -8,6 +8,8 @@ public interface RepositorioDeUsuario {
 
     Usuario cadastrarUsuario(Usuario usuario);
 
+    Usuario buscarPorCpf(String cpf);
+
     List<Usuario> listarTodos();
 
     Usuario alterarUsuario(String cpf, Usuario usuario);

@@ -26,6 +26,16 @@ public class RepositorioDeUsuarioJpa implements RepositorioDeUsuario {
     }
 
     @Override
+    public Usuario buscarPorCpf(String cpf) {
+        UsuarioEntity entity = repositorio.findByCpf(cpf);
+        if (entity == null) {
+            return null;
+        }
+
+        return mapper.toDomain(entity);
+    }
+
+    @Override
     public List<Usuario> listarTodos() {
         return repositorio.findAll().stream().map(
                         mapper::toDomain)
@@ -47,7 +57,9 @@ public class RepositorioDeUsuarioJpa implements RepositorioDeUsuario {
     @Override
     public void excluirUsuario(String cpf) {
         UsuarioEntity entity = repositorio.findByCpf(cpf);
-        repositorio.deleteById(entity.getId());
+        if (entity != null) {
+            repositorio.deleteById(entity.getId());
+        }
     }
 
 

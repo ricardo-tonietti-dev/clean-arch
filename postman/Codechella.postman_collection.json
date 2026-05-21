@@ -1,0 +1,314 @@
+{
+  "info": {
+    "_postman_id": "6cff8d2b-6f2b-462f-9e35-2f33e7a78610",
+    "name": "Codechella",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection com exemplos do frontend Thymeleaf e da API REST do Codechella, alinhada ao README."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "cpfExistente",
+      "value": "789.456.132-25"
+    },
+    {
+      "key": "cpfNovoApi",
+      "value": "789.456.132-26"
+    },
+    {
+      "key": "cpfNovoFrontend",
+      "value": "789.456.132-27"
+    }
+  ],
+  "item": [
+    {
+      "name": "Frontend Thymeleaf",
+      "item": [
+        {
+          "name": "Home",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Abrir cadastro",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/novo",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "novo"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Cadastrar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "nome",
+                  "value": "Pri",
+                  "type": "text"
+                },
+                {
+                  "key": "cpf",
+                  "value": "{{cpfNovoFrontend}}",
+                  "type": "text"
+                },
+                {
+                  "key": "nascimento",
+                  "value": "2000-10-15",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "pri@mail.com",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Abrir edicao",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{cpfExistente}}/editar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{cpfExistente}}",
+                "editar"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/x-www-form-urlencoded"
+              }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "nome",
+                  "value": "Maria Atualizada Front",
+                  "type": "text"
+                },
+                {
+                  "key": "cpf",
+                  "value": "{{cpfExistente}}",
+                  "type": "text"
+                },
+                {
+                  "key": "nascimento",
+                  "value": "2000-10-15",
+                  "type": "text"
+                },
+                {
+                  "key": "email",
+                  "value": "maria@mail.com",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{cpfExistente}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{cpfExistente}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Abrir confirmacao de exclusao",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{cpfExistente}}/excluir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{cpfExistente}}",
+                "excluir"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirmar exclusao",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/{{cpfNovoFrontend}}/excluir",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "usuarios",
+                "{{cpfNovoFrontend}}",
+                "excluir"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "API REST",
+      "item": [
+        {
+          "name": "Listar usuarios",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Criar usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{cpfNovoApi}}\",\n  \"nome\": \"Pri\",\n  \"nascimento\": \"2000-10-15\",\n  \"email\": \"pri@mail.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Atualizar usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cpf\": \"{{cpfExistente}}\",\n  \"nome\": \"Maria Atualizada\",\n  \"nascimento\": \"2000-10-15\",\n  \"email\": \"maria@mail.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{cpfExistente}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{cpfExistente}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Excluir usuario",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/api/usuarios/{{cpfExistente}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "usuarios",
+                "{{cpfExistente}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

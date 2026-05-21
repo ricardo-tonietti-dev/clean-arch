@@ -18,18 +18,36 @@ public class RepositorioDeUsuarioEmArquivo implements RepositorioDeUsuario {
     }
 
     @Override
+    public Usuario buscarPorCpf(String cpf) {
+        return this.usuarios.stream()
+                .filter(usuario -> usuario.getCpf().equals(cpf))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
     public List<Usuario> listarTodos() {
         return this.usuarios;
     }
 
     @Override
     public Usuario alterarUsuario(String cpf, Usuario usuario) {
-        return null;
+        Usuario existente = buscarPorCpf(cpf);
+        if (existente == null) {
+            return null;
+        }
+
+        usuarios.remove(existente);
+        usuarios.add(usuario);
+        return usuario;
     }
 
     @Override
     public void excluirUsuario(String cpf) {
-
+        Usuario existente = buscarPorCpf(cpf);
+        if (existente != null) {
+            usuarios.remove(existente);
+        }
     }
 
     public void gravaEmArquivo(String nomeArquivo){
